@@ -1,0 +1,175 @@
+{% load report_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reporte Técnico</title>
+    <style>
+        @page { 
+            size: a4 portrait; 
+            margin: 0.8cm; 
+        }
+
+        body { 
+            font-family: sans-serif; 
+            font-size: 8pt; 
+        }
+
+        /* ================================================================= */
+        /* CORRECCIÓN PARA FIJAR LAS FIRMAS AL FINAL DE LA PÁGINA            */
+        /* ================================================================= */
+        #content {
+            /* Dejamos un espacio abajo para que el contenido no choque con las firmas */
+            padding-bottom: 175px; 
+        }
+
+        #footer {
+            /* Fija el bloque de firmas en la parte inferior de la página */
+            position: absolute;
+            bottom: 0.8cm; /* Lo posiciona justo en el margen inferior */
+            left: 0.8cm;
+            right: 0.8cm;
+        }
+        /* ================================================================= */
+
+
+        h1 { 
+            text-align: center; 
+            background-color: #f2f2f2; 
+            padding: 5px;
+            font-size: 13pt;
+            margin-bottom: 5px;
+        }
+
+        h3 { 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 2px; 
+            font-size: 10pt;
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 5px; 
+        }
+
+        th, td { 
+            border: 1px solid #999; 
+            padding: 2px 3px; 
+            text-align: left; 
+        }
+
+        th { 
+            background-color: #e0e0e0;
+            font-size: 8.5pt;
+        }
+
+        .info-table td { 
+            border: none; 
+            padding: 1px 3px; 
+        }
+
+        .observaciones-box {
+            border: 1px solid #999; 
+            padding: 4px; 
+            min-height: 40px;
+            margin-top: 5px;
+        }
+
+        .importante-text {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 7.5pt;
+            text-align: center;
+        }
+
+        .signature-table {
+            margin-top: 25px;
+            border: none;
+        }
+
+        .signature-cell {
+            border: none;
+            text-align: center;
+            font-size: 7.5pt;
+            vertical-align: bottom;
+            width: 50%;
+        }
+
+        .signature-block {
+            padding-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="content">
+
+        <h1>INFORME TÉCNICO DE TRAGAMONEDAS</h1>
+    
+        <h3>Datos Generales</h3>
+        <table class="info-table">
+            <tr>
+                <td><strong>Número de Informe:</strong></td><td><strong>{{ reporte.numero_informe }}</strong></td>
+                <td><strong>Máquina N°:</strong></td><td>{{ reporte.numero_maquina }}</td>
+            </tr>
+            <tr>
+                <td><strong>Establecimiento:</strong></td><td>{{ reporte.establecimiento }}</td>
+                <td><strong>Marca/Juego:</strong></td><td>{{ reporte.marca_juego }}</td>
+            </tr>
+            <tr>
+                <td><strong>Fecha de Inicio:</strong></td><td>{{ reporte.fecha_inicio|date:"d/m/Y H:i" }}</td>
+                <td><strong>Fecha de Cierre:</strong></td><td>{{ reporte.fecha_cierre|date:"d/m/Y H:i" }}</td>
+            </tr>
+        </table>
+
+        <h3>Contadores Electrónicos</h3>
+        <table>
+            <thead>
+                <tr><th>Contador</th><th>Inicio</th><th>Cierre</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Créditos Jugados</td><td>{{ reporte.creditos_jugados_inicio|format_currency }}</td><td>{{ reporte.creditos_jugados_cierre|format_currency }}</td></tr>
+                <tr><td>Créditos Pagados</td><td>{{ reporte.creditos_pagados_inicio|format_currency }}</td><td>{{ reporte.creditos_pagados_cierre|format_currency }}</td></tr>
+                <tr><td>Voucher In</td><td>{{ reporte.voucher_in_inicio|format_currency }}</td><td>{{ reporte.voucher_in_cierre|format_currency }}</td></tr>
+                <tr><td>Voucher Out</td><td>{{ reporte.voucher_out_inicio|format_currency }}</td><td>{{ reporte.voucher_out_cierre|format_currency }}</td></tr>
+                <tr><td>Jackpot</td><td>{{ reporte.jackpot_inicio|format_currency }}</td><td>{{ reporte.jackpot_cierre|format_currency }}</td></tr>
+                <tr><td>Créditos Cancelados</td><td>{{ reporte.creditos_cancelados_inicio|format_currency }}</td><td>{{ reporte.creditos_cancelados_cierre|format_currency }}</td></tr>
+                <tr><td>Créditos Cancelados Totales</td><td>{{ reporte.creditos_cancelados_totales_inicio|format_currency }}</td><td>{{ reporte.creditos_cancelados_totales_cierre|format_currency }}</td></tr>
+                <tr><td>ATT Paid Total Won</td><td>{{ reporte.att_paid_total_won_inicio|format_currency }}</td><td>{{ reporte.att_paid_total_won_cierre|format_currency }}</td></tr>
+                <tr><td>Juegos</td><td>{{ reporte.juegos_inicio }}</td><td>{{ reporte.juegos_cierre }}</td></tr>
+                <tr><td>Valor de Credito</td><td>{{ reporte.valor_de_credito_inicio|format_currency }}</td><td>{{ reporte.valor_de_credito_cierre|format_currency }}</td></tr>
+                <tr><td>Drop</td><td>{{ reporte.drop_inicio|format_currency }}</td><td>{{ reporte.drop_cierre|format_currency }}</td></tr>
+                <tr><td>Billetes</td><td>{{ reporte.billetes_inicio|format_currency }}</td><td>{{ reporte.billetes_cierre|format_currency }}</td></tr>
+                <tr><td>% Real</td><td>{{ reporte.porcentaje_real_inicio }}%</td><td>{{ reporte.porcentaje_real_cierre }}%</td></tr>
+                <tr><td>Valor de Transmisión</td><td>{{ reporte.valor_transmision_inicio|format_currency }}</td><td>{{ reporte.valor_transmision_cierre|format_currency }}</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Observaciones</h3>
+        <div class="observaciones-box">{{ reporte.observaciones|linebreaksbr }}</div>
+
+        <p class="importante-text">
+            IMPORTANTE: EN CASO DE RECONOCIMIENTO DE CREDITOS COMPLETAR EL IMPORTE A RECONOCER EN NUMEROS Y LETRAS
+        </p>
+    
+    </div> <div id="footer">
+        <table class="signature-table">
+            <tbody>
+                <tr>
+                    <td class="signature-cell">
+                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Técnico</div>
+                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Jefe Slot</div>
+                    </td>
+                    <td class="signature-cell">
+                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Encargado/a de Sala</div>
+                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Cajero</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Archivo: requirements.txt
+
+xhtml2pdf==0.2.14
+mysqlclient==2.2.4
+gunicorn==22.0.0

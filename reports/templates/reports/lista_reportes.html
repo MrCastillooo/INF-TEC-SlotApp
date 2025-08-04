@@ -1,0 +1,31 @@
+{% extends 'reports/base.html' %}
+{% block content %}
+<h2 class="text-center mb-5" style="color: var(--accent-color); font-weight: 700;">Historial de Reportes</h2>
+<div class="row gy-4">
+    {% for reporte in reportes %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title" style="font-size: 1.25rem;">Reporte N°: {{ reporte.numero_informe }}</h5>
+                <p class="card-text text-secondary">Máquina: {{ reporte.numero_maquina }}</p>
+                <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
+                    <li><strong>Inicio:</strong> <small>{{ reporte.fecha_inicio|date:"d/m/Y H:i" }}</small></li>
+                    <li><strong>Cierre:</strong> <small>{{ reporte.fecha_cierre|date:"d/m/Y H:i" }}</small></li>
+                </ul>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'editar_reporte' reporte.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+                    <a href="{% url 'exportar_pdf' reporte.pk %}" class="btn btn-outline-info btn-sm">PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center col-12">
+        <div class="card p-5">
+            <p class="lead">Aún no has ingresado ningún reporte.</p>
+            <a href="{% url 'crear_reporte' %}" class="btn btn-primary mt-3">Crear el primer reporte</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

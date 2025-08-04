@@ -1,0 +1,116 @@
+{% extends 'reports/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card p-lg-4 p-3">
+    <div class="card-body">
+
+        <form method="post" class="row g-4">
+            {% csrf_token %}
+
+            <div class="d-flex justify-content-between align-items-center mb-5 col-12">
+                <h2 class="card-title mb-0">{% if editando %}Editar Reporte{% else %}Ingresar Reporte{% endif %}</h2>
+                <div class="d-flex align-items-center" style="width: 30%;">
+                    <label for="{{ form.numero_informe.id_for_label }}" class="form-label me-2 mb-0">N°:</label>
+                    {{ form.numero_informe }}
+                </div>
+            </div>
+            
+            <div class="col-md-6">{{ form.marca_juego.label_tag }} {{ form.marca_juego }}</div>
+            <div class="col-md-6">{{ form.numero_maquina.label_tag }} {{ form.numero_maquina }}</div>
+            <div class="col-md-6">{{ form.modelo.label_tag }} {{ form.modelo }}</div>
+            <div class="col-md-6">{{ form.serie.label_tag }} {{ form.serie }}</div>
+            <div class="col-md-6">{{ form.fecha_inicio.label_tag }} {{ form.fecha_inicio }}</div>
+            <div class="col-md-6">{{ form.fecha_cierre.label_tag }} {{ form.fecha_cierre }}</div>
+
+            <div class="col-12"><hr class="my-3" style="border-color: var(--border-color);"></div>
+            <div class="col-12"><h5 class="mb-3 text-center">Contadores Electrónicos</h5></div>
+            
+            <div class="col-md-6">
+                <h6 class="text-center text-secondary">--- INICIO ---</h6>
+                <div class="mb-2">{{ form.creditos_jugados_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_jugados_inicio }}</div></div>
+                <div class="mb-2">{{ form.creditos_pagados_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_pagados_inicio }}</div></div>
+                <div class="mb-2">{{ form.voucher_in_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.voucher_in_inicio }}</div></div>
+                <div class="mb-2">{{ form.voucher_out_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.voucher_out_inicio }}</div></div>
+                <div class="mb-2">{{ form.jackpot_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.jackpot_inicio }}</div></div>
+                <div class="mb-2">{{ form.creditos_cancelados_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_cancelados_inicio }}</div></div>
+                <div class="mb-2">{{ form.creditos_cancelados_totales_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_cancelados_totales_inicio }}</div></div>
+                <div class="mb-2">{{ form.att_paid_total_won_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.att_paid_total_won_inicio }}</div></div>
+                <div class="mb-2">{{ form.juegos_inicio.label_tag }}<div class="input-group">{{ form.juegos_inicio }}</div></div>
+                <div class="mb-2">{{ form.valor_de_credito_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.valor_de_credito_inicio }}</div></div>
+                <div class="mb-2">{{ form.drop_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.drop_inicio }}</div></div>
+                <div class="mb-2">{{ form.billetes_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.billetes_inicio }}</div></div>
+                <div class="mb-2">{{ form.porcentaje_real_inicio.label_tag }}<div class="input-group"><span class="input-group-text">%</span>{{ form.porcentaje_real_inicio }}</div></div>
+                <div class="mb-2">{{ form.valor_transmision_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.valor_transmision_inicio }}</div></div>
+            </div>
+
+            <div class="col-md-6">
+                <h6 class="text-center text-secondary">--- CIERRE ---</h6>
+                <div class="mb-2">{{ form.creditos_jugados_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_jugados_cierre }}</div></div>
+                <div class="mb-2">{{ form.creditos_pagados_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_pagados_cierre }}</div></div>
+                <div class="mb-2">{{ form.voucher_in_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.voucher_in_cierre }}</div></div>
+                <div class="mb-2">{{ form.voucher_out_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.voucher_out_cierre }}</div></div>
+                <div class="mb-2">{{ form.jackpot_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.jackpot_cierre }}</div></div>
+                <div class="mb-2">{{ form.creditos_cancelados_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_cancelados_cierre }}</div></div>
+                <div class="mb-2">{{ form.creditos_cancelados_totales_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_cancelados_totales_cierre }}</div></div>
+                <div class="mb-2">{{ form.att_paid_total_won_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.att_paid_total_won_cierre }}</div></div>
+                <div class="mb-2">{{ form.juegos_cierre.label_tag }}<div class="input-group">{{ form.juegos_cierre }}</div></div>
+                <div class="mb-2">{{ form.valor_de_credito_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.valor_de_credito_cierre }}</div></div>
+                <div class="mb-2">{{ form.drop_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.drop_cierre }}</div></div>
+                <div class="mb-2">{{ form.billetes_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.billetes_cierre }}</div></div>
+                <div class="mb-2">{{ form.porcentaje_real_cierre.label_tag }}<div class="input-group"><span class="input-group-text">%</span>{{ form.porcentaje_real_cierre }}</div></div>
+                <div class="mb-2">{{ form.valor_transmision_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.valor_transmision_cierre }}</div></div>
+            </div>
+            
+            <div class="col-12">
+                {{ form.observaciones.label_tag }}
+
+                <div class="mb-2">
+                    <small class="text-secondary">Ayudas rápidas:</small><br>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Máquina bloqueada con FATAL SOFTWARE ERROR. Se cera, se configura, se controlan parámetros y se habilita con N° de cierre.')">FATALL ERROR SOFTWARE</button>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se da cumplimiento a la RES XXX. Se cambia el kit de juego. Se cera, se configura, se controlan los parámetros y se habilita con el N° de cierre.')">CAMBIO KIT DE JUEGO</button>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se da cumplimiento a la RES XXX. Se modifica la configuración, se cera, se configura, se controlan los parámetros y se habilita con el N° de cierre.')">MODIFICACION DE CONFIGURACIÓN</button>    
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se realiza I.T. por máquina fuera de servicio. Presenta un error XXX, que no permite la toma de contadores.')">MAQUINA FUERA DE SERVICIO</button>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se habilita la máquina fuera de servicio I.T. XXX.')">SE HABILITA MAQUINA F.S.</button>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se realiza I.T. por máquina fuera de servicio debido a un error de RAM, que no permite la toma de contadores. Se cera, se configura, se controlan los parámetros y se habilita.')">ERROR DE RAM</button>
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se deja la máquina fuera de servicio por un error de SYSTEM HASTED que no permite la toma de contadores. Se solicitan 10 días para su reparación.')">CAMBIO KIT DE JUEGO</button>
+                </div>
+                {{ form.observaciones }}
+            </div>
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Guardar Reporte</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+<script>
+    /* --- FUNCIÓN PARA LOS BOTONES DE OBSERVACIONES --- */
+    function addObservationText(textToAdd) {
+        const textarea = document.getElementById('id_observaciones');
+        if (textarea.value.trim() !== '') {
+            textarea.value += '\\n' + textToAdd;
+        } else {
+            textarea.value = textToAdd;
+        }
+        textarea.focus();
+    }
+
+    // --- Tu script de Cleave.js se mantiene igual ---
+    const currencyFormat = { numeral: true, numeralThousandsGroupStyle: 'thousand', delimiter: '.', numeralDecimalMark: ',', numeralDecimalScale: 2 };
+    const integerFormat = { numeral: true, numeralThousandsGroupStyle: 'thousand', delimiter: '.', numeralDecimalScale: 0 };
+
+    const currencyFields = [
+        '#id_creditos_pagados_inicio', '#id_creditos_pagados_cierre', '#id_voucher_in_inicio', '#id_voucher_in_cierre',
+        '#id_voucher_out_inicio', '#id_voucher_out_cierre', '#id_jackpot_inicio', '#id_jackpot_cierre',
+        '#id_creditos_cancelados_inicio', '#id_creditos_cancelados_cierre', '#id_creditos_cancelados_totales_inicio', '#id_creditos_cancelados_totales_cierre',
+        '#id_att_paid_total_won_inicio', '#id_att_paid_total_won_cierre', '#id_juegos_inicio', '#id_juegos_cierre', '#id_drop_inicio', '#id_drop_cierre',
+        '#id_valor_de_credito_inicio', '#id_valor_de_credito_cierre', '#id_billetes_inicio', '#id_billetes_cierre', '#id_porcentaje_real_inicio', '#id_porcentaje_real_cierre',
+        '#id_valor_transmision_inicio', '#id_valor_transmision_cierre',
+        '#id_creditos_jugados_inicio', '#id_creditos_jugados_cierre'
+    ];
+    
+    currencyFields.forEach(id => { if(document.querySelector(id)) new Cleave(id, currencyFormat) });
+</script>
+{% endblock %}
