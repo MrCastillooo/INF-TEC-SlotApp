@@ -10,6 +10,12 @@ class ReporteForm(forms.ModelForm):
             'fecha_inicio': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'fecha_cierre': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'observaciones': forms.Textarea(attrs={'rows': 4}),
+
+            'firma_tecnico': forms.HiddenInput(),
+            'firma_jefe_slot': forms.HiddenInput(),
+            'firma_encargado_sala': forms.HiddenInput(),
+            'firma_cajero': forms.HiddenInput(),
+
         }
 
     def __init__(self, *args, **kwargs):

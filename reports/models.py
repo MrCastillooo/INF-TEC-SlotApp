@@ -43,5 +43,11 @@ class ReporteTragamonedas(models.Model):
     # --- OBSERVACIONES ---
     observaciones = models.TextField(blank=True, null=True)
 
+
+    firma_tecnico = models.CharField(max_length=100, blank=True, null=True, verbose_name="Firma del Técnico")
+    firma_jefe_slot = models.CharField(max_length=100, blank=True, null=True, verbose_name="Firma del Jefe de Slot")
+    firma_encargado_sala = models.CharField(max_length=100, blank=True, null=True, verbose_name="Firma del Encargado de Sala")
+    firma_cajero = models.CharField(max_length=100, blank=True, null=True, verbose_name="Firma del Cajero")
+
     def __str__(self):
         return f"Reporte {self.numero_maquina} - {self.fecha_inicio.strftime('%Y-%m-%d')}"

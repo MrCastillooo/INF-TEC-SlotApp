@@ -70,3 +70,19 @@ body, p, li, span, label, a, h1, h2, h3, h4, h5, h6 {
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(1) brightness(1.5);
 }
+
+/* ================================================================= */
+/* CORRECCIÓN PARA EL TEXTO DEL MENÚ DESPLEGABLE                     */
+/* ================================================================= */
+
+/* Forzamos el color del texto de las opciones a negro */
+.dropdown-menu .dropdown-item {
+    color: #000000 !important; 
+}
+
+/* Opcional: Cambiamos el color al pasar el mouse para que se siga leyendo */
+.dropdown-menu .dropdown-item:hover {
+    color: #FFFFFF !important; /* Hacemos el texto blanco */
+    /* Puedes usar tu color de acento para el fondo */
+    background-color: #8C64FF; 
+}

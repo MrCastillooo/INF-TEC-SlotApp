@@ -3,6 +3,10 @@
 from django import template
 from django.utils.safestring import mark_safe
 import locale
+from django import template
+from django.conf import settings
+import os
+
 
 register = template.Library()
 
@@ -22,3 +26,20 @@ def format_currency(value):
         
     except (ValueError, TypeError):
         return value
+    
+
+@register.filter(name='get_image_path')
+def get_image_path(filename):
+    if not filename:
+        return ""
+    
+    # CORRECCIÓN: Se ajusta la ruta para que coincida con tu estructura de carpetas.
+    # Ahora busca dentro de la carpeta 'reports'.
+    image_path = os.path.join(
+        settings.BASE_DIR, 
+        'reports', 
+        'static', 
+        'signatures', 
+        filename
+    )
+    return image_path

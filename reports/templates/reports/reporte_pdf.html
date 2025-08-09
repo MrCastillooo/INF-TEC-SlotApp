@@ -3,111 +3,94 @@
 <html>
 <head>
     <title>Reporte Técnico</title>
-    <style>
-        @page { 
-            size: a4 portrait; 
-            margin: 0.8cm; 
-        }
+<style>
+        @page { size: a4 portrait; margin: 0.8cm; }
 
         body { 
             font-family: sans-serif; 
             font-size: 8pt; 
         }
 
-        /* ================================================================= */
-        /* CORRECCIÓN PARA FIJAR LAS FIRMAS AL FINAL DE LA PÁGINA            */
-        /* ================================================================= */
-        #content {
-            /* Dejamos un espacio abajo para que el contenido no choque con las firmas */
-            padding-bottom: 175px; 
+        #content { 
+            padding-bottom: 110px; /* Espacio para el footer */
         }
 
-        #footer {
-            /* Fija el bloque de firmas en la parte inferior de la página */
-            position: absolute;
-            bottom: 0.8cm; /* Lo posiciona justo en el margen inferior */
+        #footer { 
+            position: fixed;
+            bottom: 0.8cm;
             left: 0.8cm;
             right: 0.8cm;
         }
-        /* ================================================================= */
 
-
-        h1 { 
-            text-align: center; 
-            background-color: #f2f2f2; 
+        h1 {
+            text-align: center;
+            background-color: #f2f2f2;
             padding: 5px;
             font-size: 13pt;
             margin-bottom: 5px;
         }
 
-        h3 { 
-            border-bottom: 1px solid #ccc; 
-            padding-bottom: 2px; 
+        h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2px;
             font-size: 10pt;
             margin-top: 8px;
             margin-bottom: 5px;
         }
 
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 5px; 
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        th, td { border: 1px solid #999; padding: 2px 3px; text-align: left; }
+        th { background-color: #e0e0e0; font-size: 9pt; } /* Redondeado a entero */
 
-        th, td { 
-            border: 1px solid #999; 
-            padding: 2px 3px; 
-            text-align: left; 
-        }
-
-        th { 
-            background-color: #e0e0e0;
-            font-size: 8.5pt;
-        }
-
-        .info-table td { 
-            border: none; 
-            padding: 1px 3px; 
-        }
+        table, tr, td, th { page-break-inside: avoid; }
+        .info-table td { border: none; padding: 1px 3px; }
 
         .observaciones-box {
-            border: 1px solid #999; 
-            padding: 4px; 
+            border: 1px solid #999;
+            padding: 4px;
             min-height: 40px;
             margin-top: 5px;
+            overflow-wrap: anywhere;
         }
 
         .importante-text {
             margin-top: 8px;
             font-weight: bold;
-            font-size: 7.5pt;
+            font-size: 8pt; /* Redondeado a entero */
             text-align: center;
         }
 
-        .signature-table {
-            margin-top: 25px;
-            border: none;
-        }
-
+        .signature-table { border: none; }
         .signature-cell {
             border: none;
             text-align: center;
-            font-size: 7.5pt;
-            vertical-align: bottom;
+            font-size: 8pt; /* Redondeado a entero */
+            vertical-align: top;
             width: 50%;
         }
 
         .signature-block {
-            padding-top: 25px;
+            padding-top: 12px;
+        }
+
+        .signature-image {
+            height: 100px; /* Valor fijo en lugar de variable */
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .signature-placeholder {
+            display: block;
+            height: 33px; /* Valor fijo (28px + 5px de margen) */
         }
     </style>
 </head>
 <body>
-
     <div id="content">
-
         <h1>INFORME TÉCNICO DE TRAGAMONEDAS</h1>
-    
         <h3>Datos Generales</h3>
         <table class="info-table">
             <tr>
@@ -123,7 +106,6 @@
                 <td><strong>Fecha de Cierre:</strong></td><td>{{ reporte.fecha_cierre|date:"d/m/Y H:i" }}</td>
             </tr>
         </table>
-
         <h3>Contadores Electrónicos</h3>
         <table>
             <thead>
@@ -146,30 +128,55 @@
                 <tr><td>Valor de Transmisión</td><td>{{ reporte.valor_transmision_inicio|format_currency }}</td><td>{{ reporte.valor_transmision_cierre|format_currency }}</td></tr>
             </tbody>
         </table>
-
         <h3>Observaciones</h3>
         <div class="observaciones-box">{{ reporte.observaciones|linebreaksbr }}</div>
-
         <p class="importante-text">
             IMPORTANTE: EN CASO DE RECONOCIMIENTO DE CREDITOS COMPLETAR EL IMPORTE A RECONOCER EN NUMEROS Y LETRAS
         </p>
-    
-    </div> <div id="footer">
+    </div>
+    <div id="footer">
         <table class="signature-table">
             <tbody>
                 <tr>
                     <td class="signature-cell">
-                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Técnico</div>
-                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Jefe Slot</div>
+                        <div class="signature-block">
+                            {% if reporte.firma_tecnico %}
+                                <img src="{{ reporte.firma_tecnico|get_image_path }}" class="signature-image"><br>
+                            {% else %}
+                                <span class="signature-placeholder"></span>
+                            {% endif %}
+                            Firma y Aclaración<br>Técnico
+                        </div>
+                        <div class="signature-block">
+                            {% if reporte.firma_jefe_slot %}
+                                <img src="{{ reporte.firma_jefe_slot|get_image_path }}" class="signature-image"><br>
+                            {% else %}
+                                <span class="signature-placeholder"></span>
+                            {% endif %}
+                            Firma y Aclaración<br>Jefe Slot
+                        </div>
                     </td>
                     <td class="signature-cell">
-                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Encargado/a de Sala</div>
-                        <div class="signature-block">____________________<br>Firma y Aclaración<br>Cajero</div>
+                        <div class="signature-block">
+                            {% if reporte.firma_encargado_sala %}
+                                <img src="{{ reporte.firma_encargado_sala|get_image_path }}" class="signature-image"><br>
+                            {% else %}
+                                <span class="signature-placeholder"></span>
+                            {% endif %}
+                            Firma y Aclaración<br>Encargado/a de Sala
+                        </div>
+                        <div class="signature-block">
+                            {% if reporte.firma_cajero %}
+                                <img src="{{ reporte.firma_cajero|get_image_path }}" class="signature-image"><br>
+                            {% else %}
+                                <span class="signature-placeholder"></span>
+                            {% endif %}
+                            Firma y Aclaración<br>Cajero
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 </body>
 </html>

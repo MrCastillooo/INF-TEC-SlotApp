@@ -4,9 +4,13 @@
 {% block content %}
 <div class="card p-lg-4 p-3">
     <div class="card-body">
-
         <form method="post" class="row g-4">
             {% csrf_token %}
+            
+            {{ form.firma_tecnico }}
+            {{ form.firma_jefe_slot }}
+            {{ form.firma_encargado_sala }}
+            {{ form.firma_cajero }}
 
             <div class="d-flex justify-content-between align-items-center mb-5 col-12">
                 <h2 class="card-title mb-0">{% if editando %}Editar Reporte{% else %}Ingresar Reporte{% endif %}</h2>
@@ -64,7 +68,6 @@
             
             <div class="col-12">
                 {{ form.observaciones.label_tag }}
-
                 <div class="mb-2">
                     <small class="text-secondary">Ayudas rápidas:</small><br>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Máquina bloqueada con FATAL SOFTWARE ERROR. Se cera, se configura, se controlan parámetros y se habilita con N° de cierre.')">FATALL ERROR SOFTWARE</button>
@@ -77,6 +80,62 @@
                 </div>
                 {{ form.observaciones }}
             </div>
+
+            <div class="col-12"><hr class="my-3" style="border-color: var(--border-color);"></div>
+            <div class="col-12"><h5 class="mb-3 text-center">Firmas Digitales</h5></div>
+
+            <div class="col-md-6 col-lg-3 text-center">
+                <p class="text-secondary">Técnico</p>
+                <img id="img_firma_tecnico" src="{% if form.instance.firma_tecnico %}{% static 'signatures/' %}{{ form.instance.firma_tecnico }}{% endif %}" alt="Firma Técnico" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                <div class="d-grid gap-2 mt-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Seleccionar Técnico
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('BRAIANSARMIENTO.jpg', 'tecnico'); return false;">Brian Sarmiento</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('ENZOLOPEZ.jpg', 'tecnico'); return false;">Enzo Lopez</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('FULVIOERBES.jpg', 'tecnico'); return false;">Fulvio Erbes</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('JUANCABALLERO.jpg', 'tecnico'); return false;">Juan Caballero</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 text-center">
+                <p class="text-secondary">Jefe de Slot</p>
+                <img id="img_firma_jefe_slot" src="{% if form.instance.firma_jefe_slot %}{% static 'signatures/' %}{{ form.instance.firma_jefe_slot }}{% endif %}" alt="Firma Jefe Slot" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                <div class="d-grid gap-2 mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="setSignature('SILVIACISNERO.jpg', 'jefe_slot'); return false;">Silvia Cisnero</button>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 text-center">
+                <p class="text-secondary">Encargado/a de Sala</p>
+                 <img id="img_firma_encargado_sala" src="{% if form.instance.firma_encargado_sala %}{% static 'signatures/' %}{{ form.instance.firma_encargado_sala }}{% endif %}" alt="Firma Encargado" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                <div class="d-grid gap-2 mt-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Seleccionar Encargado/a
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('CAMILA.jpg', 'encargado_sala'); return false;">Camila</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('CRISTINADIAZ.jpg', 'encargado_sala'); return false;">Cristina Diaz</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('ELIANAROJO.jpg', 'encargado_sala'); return false;">Eliana Rojo</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('IVONERAFFE.jpg', 'encargado_sala'); return false;">Ivone Raffe</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 text-center">
+                <p class="text-secondary">Cajero</p>
+                <img id="img_firma_cajero" src="{% if form.instance.firma_cajero %}{% static 'signatures/' %}{{ form.instance.firma_cajero }}{% endif %}" alt="Firma Cajero" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                 <div class="d-grid gap-2 mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="setSignature('firma4.jpg', 'cajero')">Maria Fernandez</button>
+                 </div>
+            </div>
+
             <div class="col-12 text-center mt-4">
                 <button type="submit" class="btn btn-primary btn-lg">Guardar Reporte</button>
             </div>
@@ -96,6 +155,23 @@
         }
         textarea.focus();
     }
+    
+    // ================================================================
+    // INICIO: JAVASCRIPT PARA LAS FIRMAS
+    // ================================================================
+    const signatureBasePath = "{% static 'signatures/' %}";
+    function setSignature(imageFilename, role) {
+        // Muestra la imagen de la firma seleccionada
+        const imgElement = document.getElementById('img_firma_' + role);
+        imgElement.src = signatureBasePath + imageFilename;
+        
+        // Rellena el campo oculto correspondiente con el NOMBRE DEL ARCHIVO para guardarlo
+        document.getElementById('id_firma_' + role).value = imageFilename;
+    }
+    // ================================================================
+    // FIN: JAVASCRIPT PARA LAS FIRMAS
+    // ================================================================
+
 
     // --- Tu script de Cleave.js se mantiene igual ---
     const currencyFormat = { numeral: true, numeralThousandsGroupStyle: 'thousand', delimiter: '.', numeralDecimalMark: ',', numeralDecimalScale: 2 };
