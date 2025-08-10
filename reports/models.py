@@ -2,7 +2,7 @@ from django.db import models
 
 class ReporteTragamonedas(models.Model):
     # --- DATOS GENERALES ---
-    numero_informe = models.CharField(max_length=100, unique=True, verbose_name="Número de Informe")
+    numero_informe = models.IntegerField(unique=True, verbose_name="Número de Informe")
     fecha_inicio = models.DateTimeField()
     fecha_cierre = models.DateTimeField()
     marca_juego = models.CharField(max_length=100)

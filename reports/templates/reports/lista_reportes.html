@@ -1,4 +1,6 @@
 {% extends 'reports/base.html' %}
+{% load static %}
+
 {% block content %}
 <h2 class="text-center mb-5" style="color: var(--accent-color); font-weight: 700;">Historial de Reportes</h2>
 <div class="row gy-4">
@@ -13,8 +15,15 @@
                     <li><strong>Cierre:</strong> <small>{{ reporte.fecha_cierre|date:"d/m/Y H:i" }}</small></li>
                 </ul>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="{% url 'editar_reporte' reporte.pk %}" class="btn btn-secondary btn-sm">Editar</a>
-                    <a href="{% url 'exportar_pdf' reporte.pk %}" class="btn btn-outline-info btn-sm">PDF</a>
+                    <a href="{% url 'editar_reporte' reporte.pk %}" class="btn btn-secondary-custom btn-sm">Editar</a>
+                    
+                    <form id="form-borrar-{{ reporte.pk }}" action="{% url 'borrar_reporte' reporte.pk %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-danger-custom btn-sm btn-borrar-confirm" data-form-id="form-borrar-{{ reporte.pk }}">
+                            Borrar
+                        </button>
+                    </form>
+                    <a href="{% url 'exportar_pdf' reporte.pk %}" class="btn btn-info-custom btn-sm">PDF</a>
                 </div>
             </div>
         </div>
@@ -28,4 +37,40 @@
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.btn-borrar-confirm');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevenimos el envío del formulario
+                const formId = this.dataset.formId;
+                const form = document.getElementById(formId);
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡Esta acción no se puede deshacer!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, ¡borrar!',
+                    cancelButtonText: 'Cancelar',
+                    
+                    // --- Estilos para el modo oscuro ---
+                    background: '#1a1a2e',
+                    color: '#F0F0F0',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, enviamos el formulario
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+    </script>
 {% endblock %}

@@ -5,7 +5,7 @@ class ReporteForm(forms.ModelForm):
     class Meta:
         model = ReporteTragamonedas
         fields = '__all__'
-        exclude = ['establecimiento']
+        exclude = ['establecimiento', 'numero_informe']
         widgets = {
             'fecha_inicio': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'fecha_cierre': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

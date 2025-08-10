@@ -11,27 +11,35 @@ from xhtml2pdf import pisa
 # ================================================================
 # reports/views.py
 
+# reports/views.py
+
 def crear_reporte(request):
     if request.method == 'POST':
         form = ReporteForm(request.POST)
         if form.is_valid():
-            # Paso 1: Crea el objeto en memoria, pero NO lo guardes en la BD todavía
+            
+            ultimo_reporte = ReporteTragamonedas.objects.order_by('-numero_informe').first()
+            
+            if ultimo_reporte:
+                # ================================================================
+                # CORRECCIÓN: Convertimos el número (que es texto) a un entero (int) antes de sumar.
+                # ================================================================
+                nuevo_numero = int(ultimo_reporte.numero_informe) + 1
+            else:
+                nuevo_numero = 3500
+
             reporte = form.save(commit=False)
-            
-            # Paso 2: Asigna manualmente el valor al campo que falta
+            reporte.numero_informe = nuevo_numero
             reporte.establecimiento = "NUEVO CASINO ALBERDI"
-            
-            # Paso 3: Ahora sí, guarda el objeto completo en la BD
             reporte.save()
             
-            messages.success(request, '¡Reporte guardado con éxito!')
+            messages.success(request, f'¡Reporte N° {nuevo_numero} guardado con éxito!')
             return redirect('lista_reportes')
         else:
             print("Errores en el formulario:", form.errors)
     else:
         form = ReporteForm()
     return render(request, 'reports/formulario_reporte.html', {'form': form})
-
 # --- Las otras vistas (lista_reportes, editar_reporte, etc.) se mantienen igual ---
 
 def lista_reportes(request):
@@ -64,3 +72,22 @@ def exportar_pdf(request, pk):
     if pisa_status.err:
        return HttpResponse('Hubo un error al generar el PDF.')
     return response
+
+
+def borrar_reporte(request, pk):
+    # Solo permitir borrado a través de POST para seguridad
+    if request.method == 'POST':
+        # Buscar el reporte por su ID
+        reporte = get_object_or_404(ReporteTragamonedas, pk=pk)
+        
+        # Guardar el número para el mensaje antes de borrar
+        numero_informe = reporte.numero_informe
+        
+        # Borrar el objeto de la base de datos
+        reporte.delete()
+        
+        # Crear mensaje de éxito
+        messages.success(request, f'El Reporte N° {numero_informe} ha sido borrado exitosamente.')
+    
+    # Redirigir siempre a la lista de reportes
+    return redirect('lista_reportes')
