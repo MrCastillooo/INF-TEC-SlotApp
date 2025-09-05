@@ -4,18 +4,23 @@
 {% block content %}
 <div class="card p-lg-4 p-3">
     <div class="card-body">
+
         <form method="post" class="row g-4">
             {% csrf_token %}
-            
+
             {{ form.firma_tecnico }}
             {{ form.firma_jefe_slot }}
             {{ form.firma_encargado_sala }}
             {{ form.firma_cajero }}
 
-            <div class="mb-5 col-12">
-                <h2 class="card-title text-center">{% if editando %}Editar Reporte N° {{ form.instance.numero_informe }}{% else %}Ingresar Nuevo Reporte{% endif %}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-5 col-12">
+                <h2 class="card-title mb-0">{% if editando %}Editar Reporte{% else %}Ingresar Reporte{% endif %}</h2>
+                <div class="d-flex align-items-center" style="width: 30%;">
+                    <label for="{{ form.numero_informe.id_for_label }}" class="form-label me-2 mb-0">N°:</label>
+                    {{ form.numero_informe }}
+                </div>
             </div>
-            
+
             <div class="col-md-6">{{ form.marca_juego.label_tag }} {{ form.marca_juego }}</div>
             <div class="col-md-6">{{ form.numero_maquina.label_tag }} {{ form.numero_maquina }}</div>
             <div class="col-md-6">{{ form.modelo.label_tag }} {{ form.modelo }}</div>
@@ -25,7 +30,7 @@
 
             <div class="col-12"><hr class="my-3" style="border-color: var(--border-color);"></div>
             <div class="col-12"><h5 class="mb-3 text-center">Contadores Electrónicos</h5></div>
-            
+
             <div class="col-md-6">
                 <h6 class="text-center text-secondary">--- INICIO ---</h6>
                 <div class="mb-2">{{ form.creditos_jugados_inicio.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.creditos_jugados_inicio }}</div></div>
@@ -61,14 +66,14 @@
                 <div class="mb-2">{{ form.porcentaje_real_cierre.label_tag }}<div class="input-group"><span class="input-group-text">%</span>{{ form.porcentaje_real_cierre }}</div></div>
                 <div class="mb-2">{{ form.valor_transmision_cierre.label_tag }}<div class="input-group"><span class="input-group-text">$</span>{{ form.valor_transmision_cierre }}</div></div>
             </div>
-            
+
             <div class="col-12">
                 {{ form.observaciones.label_tag }}
                 <div class="mb-2">
                     <small class="text-secondary">Ayudas rápidas:</small><br>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Máquina bloqueada con FATAL SOFTWARE ERROR. Se cera, se configura, se controlan parámetros y se habilita con N° de cierre.')">FATALL ERROR SOFTWARE</button>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se da cumplimiento a la RES XXX. Se cambia el kit de juego. Se cera, se configura, se controlan los parámetros y se habilita con el N° de cierre.')">CAMBIO KIT DE JUEGO</button>
-                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se da cumplimiento a la RES XXX. Se modifica la configuración, se cera, se configura, se controlan los parámetros y se habilita con el N° de cierre.')">MODIFICACION DE CONFIGURACIÓN</button>    
+                    <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se da cumplimiento a la RES XXX. Se modifica la configuración, se cera, se configura, se controlan los parámetros y se habilita con el N° de cierre.')">MODIFICACION DE CONFIGURACIÓN</button>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se realiza I.T. por máquina fuera de servicio. Presenta un error XXX, que no permite la toma de contadores.')">MAQUINA FUERA DE SERVICIO</button>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se habilita la máquina fuera de servicio I.T. XXX.')">SE HABILITA MAQUINA F.S.</button>
                     <button type="button" class="btn btn-sm btn-outline-light mt-1" onclick="addObservationText('Se realiza I.T. por máquina fuera de servicio debido a un error de RAM, que no permite la toma de contadores. Se cera, se configura, se controlan los parámetros y se habilita.')">ERROR DE RAM</button>
@@ -89,10 +94,11 @@
                             Seleccionar Técnico
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="setSignature('BRAIANSARMIENTO.jpg', 'tecnico'); return false;">Brian Sarmiento</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('BRAIANSARMIENTO.jpg', 'tecnico'); return false;">Brian Saravia</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setSignature('ENZOLOPEZ.jpg', 'tecnico'); return false;">Enzo Lopez</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setSignature('FULVIOERBES.jpg', 'tecnico'); return false;">Fulvio Erbes</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setSignature('JUANCABALLERO.jpg', 'tecnico'); return false;">Juan Caballero</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('LUISVIÑABAL.jpg', 'tecnico'); return false;">Luis Viñabal</a></li>
                         </ul>
                     </div>
                 </div>
@@ -102,15 +108,15 @@
                 <p class="text-secondary">Jefe de Slot</p>
                 <img id="img_firma_jefe_slot" src="{% if form.instance.firma_jefe_slot %}{% static 'signatures/' %}{{ form.instance.firma_jefe_slot }}{% endif %}" alt="Firma Jefe Slot" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
                 <div class="d-grid gap-2 mt-2">
-                    <button type="button" class="btn btn-sm btn-outline-light" onclick="setSignature('SILVIACISNERO.jpg', 'jefe_slot'); return false;">Silvia Cisnero</button>
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="setSignature('SILVIACISNERO.jpg', 'jefe_slot')">Silvia Cisnero</button>
                 </div>
             </div>
-            
+
             <div class="col-md-6 col-lg-3 text-center">
                 <p class="text-secondary">Encargado/a de Sala</p>
                  <img id="img_firma_encargado_sala" src="{% if form.instance.firma_encargado_sala %}{% static 'signatures/' %}{{ form.instance.firma_encargado_sala }}{% endif %}" alt="Firma Encargado" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
                 <div class="d-grid gap-2 mt-2">
-                    <div class="dropdown">
+                     <div class="dropdown">
                         <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             Seleccionar Encargado/a
                         </button>
@@ -119,17 +125,10 @@
                             <li><a class="dropdown-item" href="#" onclick="setSignature('CRISTINADIAZ.jpg', 'encargado_sala'); return false;">Cristina Diaz</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setSignature('ELIANAROJO.jpg', 'encargado_sala'); return false;">Eliana Rojo</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setSignature('IVONERAFFE.jpg', 'encargado_sala'); return false;">Ivone Raffe</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setSignature('AMANDAFLORES.jpg', 'encargado_sala'); return false;">Amanda Flores</a></li>
                         </ul>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 text-center">
-                <p class="text-secondary">Cajero</p>
-                <img id="img_firma_cajero" src="{% if form.instance.firma_cajero %}{% static 'signatures/' %}{{ form.instance.firma_cajero }}{% endif %}" alt="Firma Cajero" style="height: 50px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
-                 <div class="d-grid gap-2 mt-2">
-                    <button type="button" class="btn btn-sm btn-outline-light" onclick="setSignature('firma4.jpg', 'cajero')">Maria Fernandez</button>
-                 </div>
             </div>
 
             <div class="col-12 text-center mt-4">
@@ -151,38 +150,20 @@
         }
         textarea.focus();
     }
-    
-    // ================================================================
-    // INICIO: JAVASCRIPT PARA LAS FIRMAS
-    // ================================================================
-    const signatureBasePath = "{% static 'signatures/' %}";
+
+    /* --- FUNCIÓN PARA LAS FIRMAS --- */
+     const signatureBasePath = "{% static 'signatures/' %}";
     function setSignature(imageFilename, role) {
         // Muestra la imagen de la firma seleccionada
         const imgElement = document.getElementById('img_firma_' + role);
         imgElement.src = signatureBasePath + imageFilename;
-        
+
         // Rellena el campo oculto correspondiente con el NOMBRE DEL ARCHIVO para guardarlo
         document.getElementById('id_firma_' + role).value = imageFilename;
     }
-    // ================================================================
-    // FIN: JAVASCRIPT PARA LAS FIRMAS
-    // ================================================================
 
 
-    // --- Tu script de Cleave.js se mantiene igual ---
-    const currencyFormat = { numeral: true, numeralThousandsGroupStyle: 'thousand', delimiter: '.', numeralDecimalMark: ',', numeralDecimalScale: 2 };
-    const integerFormat = { numeral: true, numeralThousandsGroupStyle: 'thousand', delimiter: '.', numeralDecimalScale: 0 };
 
-    const currencyFields = [
-        '#id_creditos_pagados_inicio', '#id_creditos_pagados_cierre', '#id_voucher_in_inicio', '#id_voucher_in_cierre',
-        '#id_voucher_out_inicio', '#id_voucher_out_cierre', '#id_jackpot_inicio', '#id_jackpot_cierre',
-        '#id_creditos_cancelados_inicio', '#id_creditos_cancelados_cierre', '#id_creditos_cancelados_totales_inicio', '#id_creditos_cancelados_totales_cierre',
-        '#id_att_paid_total_won_inicio', '#id_att_paid_total_won_cierre', '#id_juegos_inicio', '#id_juegos_cierre', '#id_drop_inicio', '#id_drop_cierre',
-        '#id_valor_de_credito_inicio', '#id_valor_de_credito_cierre', '#id_billetes_inicio', '#id_billetes_cierre', '#id_porcentaje_real_inicio', '#id_porcentaje_real_cierre',
-        '#id_valor_transmision_inicio', '#id_valor_transmision_cierre',
-        '#id_creditos_jugados_inicio', '#id_creditos_jugados_cierre'
-    ];
-    
     currencyFields.forEach(id => { if(document.querySelector(id)) new Cleave(id, currencyFormat) });
 </script>
 {% endblock %}

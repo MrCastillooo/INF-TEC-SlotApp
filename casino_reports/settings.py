@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-p-w5o&%5ur)br4ig#0a!yj&zgb2+^2pwhp+80t^m58#p^d(g92
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['srcastilosist25.pythonanywhere.com']
 
 
 # Application definition
@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'casino_reports.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'reportes_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',       
+        'NAME': 'SrCastiloSist25$default',
+        'USER': 'SrCastiloSist25',
+        'PASSWORD': 'Leandro2025',
+        'HOST': 'SrCastiloSist25.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
 

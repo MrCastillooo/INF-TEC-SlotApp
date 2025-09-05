@@ -17,9 +17,9 @@ def crear_reporte(request):
     if request.method == 'POST':
         form = ReporteForm(request.POST)
         if form.is_valid():
-            
+
             ultimo_reporte = ReporteTragamonedas.objects.order_by('-numero_informe').first()
-            
+
             if ultimo_reporte:
                 # ================================================================
                 # CORRECCIÓN: Convertimos el número (que es texto) a un entero (int) antes de sumar.
@@ -32,7 +32,7 @@ def crear_reporte(request):
             reporte.numero_informe = nuevo_numero
             reporte.establecimiento = "NUEVO CASINO ALBERDI"
             reporte.save()
-            
+
             messages.success(request, f'¡Reporte N° {nuevo_numero} guardado con éxito!')
             return redirect('lista_reportes')
         else:
@@ -43,7 +43,8 @@ def crear_reporte(request):
 # --- Las otras vistas (lista_reportes, editar_reporte, etc.) se mantienen igual ---
 
 def lista_reportes(request):
-    reportes = ReporteTragamonedas.objects.all().order_by('-fecha_inicio')
+    # CORRECCIÓN: Ordenamos por '-id'. El guion (-) asegura que el ID más alto (el más nuevo) aparezca primero.
+    reportes = ReporteTragamonedas.objects.all().order_by('-id')
     return render(request, 'reports/lista_reportes.html', {'reportes': reportes})
 
 def editar_reporte(request, pk):
@@ -79,15 +80,15 @@ def borrar_reporte(request, pk):
     if request.method == 'POST':
         # Buscar el reporte por su ID
         reporte = get_object_or_404(ReporteTragamonedas, pk=pk)
-        
+
         # Guardar el número para el mensaje antes de borrar
         numero_informe = reporte.numero_informe
-        
+
         # Borrar el objeto de la base de datos
         reporte.delete()
-        
+
         # Crear mensaje de éxito
         messages.success(request, f'El Reporte N° {numero_informe} ha sido borrado exitosamente.')
-    
+
     # Redirigir siempre a la lista de reportes
     return redirect('lista_reportes')

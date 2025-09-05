@@ -10,18 +10,16 @@ class ReporteForm(forms.ModelForm):
             'fecha_inicio': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'fecha_cierre': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'observaciones': forms.Textarea(attrs={'rows': 4}),
-
             'firma_tecnico': forms.HiddenInput(),
             'firma_jefe_slot': forms.HiddenInput(),
             'firma_encargado_sala': forms.HiddenInput(),
             'firma_cajero': forms.HiddenInput(),
-
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Lista de campos que usan el formato de JavaScript
-        self.formatted_fields = [
+        optional_fields = [
+            'marca_juego', 'numero_maquina', 'modelo', 'serie', 'fecha_inicio', 'fecha_cierre',
             'creditos_jugados_inicio', 'creditos_jugados_cierre', 'creditos_pagados_inicio',
             'creditos_pagados_cierre', 'voucher_in_inicio', 'voucher_in_cierre',
             'voucher_out_inicio', 'voucher_out_cierre', 'jackpot_inicio', 'jackpot_cierre',
@@ -33,25 +31,11 @@ class ReporteForm(forms.ModelForm):
             'porcentaje_real_inicio', 'porcentaje_real_cierre', 'valor_transmision_inicio',
             'valor_transmision_cierre'
         ]
-        
+
+        # Simplemente agregamos la clase de Bootstrap a todos los campos.
+        # Se eliminó la lógica que forzaba el teclado numérico.
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control'})
 
-    def clean(self):
-        """
-        Este método se ejecuta automáticamente durante la validación del formulario.
-        Lo usamos para "limpiar" los datos antes de guardarlos.
-        """
-        cleaned_data = super().clean()
-        
-        for field_name in self.formatted_fields:
-            if field_name in cleaned_data:
-                value = cleaned_data.get(field_name)
-                if isinstance(value, str):
-                    # 1. Quitamos los puntos de miles
-                    value_cleaned = value.replace('.', '')
-                    # 2. Reemplazamos la coma decimal por un punto
-                    value_cleaned = value_cleaned.replace(',', '.')
-                    cleaned_data[field_name] = value_cleaned
-                    
-        return cleaned_data
+    # El método 'clean' que limpiaba los números ya no es necesario
+    # porque ahora aceptamos cualquier texto. Lo puedes borrar o dejar, no afectará.

@@ -3,89 +3,31 @@
 <html>
 <head>
     <title>Reporte Técnico</title>
-<style>
+    <style>
         @page { size: a4 portrait; margin: 0.8cm; }
-
-        body { 
-            font-family: sans-serif; 
-            font-size: 8pt; 
-        }
-
-        #content { 
-            padding-bottom: 110px; /* Espacio para el footer */
-        }
-
-        #footer { 
-            position: fixed;
-            bottom: 0.8cm;
-            left: 0.8cm;
-            right: 0.8cm;
-        }
-
-        h1 {
-            text-align: center;
-            background-color: #f2f2f2;
-            padding: 5px;
-            font-size: 13pt;
-            margin-bottom: 5px;
-        }
-
-        h3 {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 2px;
-            font-size: 10pt;
-            margin-top: 8px;
-            margin-bottom: 5px;
-        }
-
+        body { font-family: sans-serif; font-size: 8pt; }
+        #content { padding-bottom: 110px; }
+        #footer { position: fixed; bottom: 0.8cm; left: 0.8cm; right: 0.8cm; }
+        h1 { text-align: center; background-color: #f2f2f2; padding: 5px; font-size: 13pt; margin-bottom: 5px; }
+        h3 { border-bottom: 1px solid #ccc; padding-bottom: 2px; font-size: 10pt; margin-top: 8px; margin-bottom: 5px; }
         table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         th, td { border: 1px solid #999; padding: 2px 3px; text-align: left; }
-        th { background-color: #e0e0e0; font-size: 9pt; } /* Redondeado a entero */
-
-        table, tr, td, th { page-break-inside: avoid; }
+        th { background-color: #e0e0e0; font-size: 9pt; }
         .info-table td { border: none; padding: 1px 3px; }
-
-        .observaciones-box {
-            border: 1px solid #999;
-            padding: 4px;
-            min-height: 40px;
-            margin-top: 5px;
-            overflow-wrap: anywhere;
-        }
-
-        .importante-text {
-            margin-top: 8px;
-            font-weight: bold;
-            font-size: 8pt; /* Redondeado a entero */
-            text-align: center;
-        }
-
+        .observaciones-box { border: 1px solid #999; padding: 4px; min-height: 40px; margin-top: 5px; overflow-wrap: anywhere; }
+        .importante-text { margin-top: 8px; font-weight: bold; font-size: 6pt; text-align: center; }
         .signature-table { border: none; }
-        .signature-cell {
-            border: none;
+        .signature-cell { border: none; text-align: center; font-size: 8pt; vertical-align: top; width: 50%; }
+        .signature-block { padding-top: 12px; }
+        .signature-image { height: 88px; width: auto; max-width: 100%; object-fit: contain; margin-bottom: 5px; }
+        .signature-placeholder { display: block; height: 33px; }
+        .th-center {
             text-align: center;
-            font-size: 8pt; /* Redondeado a entero */
-            vertical-align: top;
-            width: 50%;
+        }
+        .td-center {
+            text-align: center;
         }
 
-        .signature-block {
-            padding-top: 12px;
-        }
-
-        .signature-image {
-            height: 95px; /* Valor fijo en lugar de variable */
-            width: auto;
-            max-width: 100%;
-            object-fit: contain;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        .signature-placeholder {
-            display: block;
-            height: 33px; /* Valor fijo (28px + 5px de margen) */
-        }
     </style>
 </head>
 <body>
@@ -94,42 +36,109 @@
         <h3>Datos Generales</h3>
         <table class="info-table">
             <tr>
-                <td><strong>Número de Informe:</strong></td><td><strong>{{ reporte.numero_informe }}</strong></td>
-                <td><strong>Máquina N°:</strong></td><td>{{ reporte.numero_maquina }}</td>
+                <td style="width: 25%;"><strong>Número de Informe:</strong></td>
+                <td style="width: 25%;">{{ reporte.numero_informe|default:"&nbsp;" }}</td>
+                <td style="width: 25%;"><strong>Establecimiento:</strong></td>
+                <td style="width: 25%;">{{ reporte.establecimiento|default:"&nbsp;" }}</td>
             </tr>
             <tr>
-                <td><strong>Establecimiento:</strong></td><td>{{ reporte.establecimiento }}</td>
-                <td><strong>Marca/Juego:</strong></td><td>{{ reporte.marca_juego }}</td>
+                <td><strong>Máquina N°:</strong></td>
+                <td>{{ reporte.numero_maquina|default:"&nbsp;" }}</td>
+                <td><strong>Marca/Juego:</strong></td>
+                <td>{{ reporte.marca_juego|default:"&nbsp;" }}</td>
             </tr>
             <tr>
-                <td><strong>Fecha de Inicio:</strong></td><td>{{ reporte.fecha_inicio|date:"d/m/Y H:i" }}</td>
-                <td><strong>Fecha de Cierre:</strong></td><td>{{ reporte.fecha_cierre|date:"d/m/Y H:i" }}</td>
+                <td><strong>Fecha de Inicio:</strong></td>
+                <td>{{ reporte.fecha_inicio|date:"d/m/Y H:i"|default:"&nbsp;" }}</td>
+                <td><strong>Fecha de Cierre:</strong></td>
+                <td>{{ reporte.fecha_cierre|date:"d/m/Y H:i"|default:"&nbsp;" }}</td>
             </tr>
         </table>
+
         <h3>Contadores Electrónicos</h3>
         <table>
             <thead>
-                <tr><th>Contador</th><th>Inicio</th><th>Cierre</th></tr>
+                <tr>
+                    <th class="th-center">CONTADOR</th>
+                    <th class="th-center">INICIO</th>
+                    <th class="th-center">CIERRE</th>
+                </tr>
             </thead>
             <tbody>
-                <tr><td>Créditos Jugados</td><td>{{ reporte.creditos_jugados_inicio|format_currency }}</td><td>{{ reporte.creditos_jugados_cierre|format_currency }}</td></tr>
-                <tr><td>Créditos Pagados</td><td>{{ reporte.creditos_pagados_inicio|format_currency }}</td><td>{{ reporte.creditos_pagados_cierre|format_currency }}</td></tr>
-                <tr><td>Voucher In</td><td>{{ reporte.voucher_in_inicio|format_currency }}</td><td>{{ reporte.voucher_in_cierre|format_currency }}</td></tr>
-                <tr><td>Voucher Out</td><td>{{ reporte.voucher_out_inicio|format_currency }}</td><td>{{ reporte.voucher_out_cierre|format_currency }}</td></tr>
-                <tr><td>Jackpot</td><td>{{ reporte.jackpot_inicio|format_currency }}</td><td>{{ reporte.jackpot_cierre|format_currency }}</td></tr>
-                <tr><td>Créditos Cancelados</td><td>{{ reporte.creditos_cancelados_inicio|format_currency }}</td><td>{{ reporte.creditos_cancelados_cierre|format_currency }}</td></tr>
-                <tr><td>Créditos Cancelados Totales</td><td>{{ reporte.creditos_cancelados_totales_inicio|format_currency }}</td><td>{{ reporte.creditos_cancelados_totales_cierre|format_currency }}</td></tr>
-                <tr><td>ATT Paid Total Won</td><td>{{ reporte.att_paid_total_won_inicio|format_currency }}</td><td>{{ reporte.att_paid_total_won_cierre|format_currency }}</td></tr>
-                <tr><td>Juegos</td><td>{{ reporte.juegos_inicio }}</td><td>{{ reporte.juegos_cierre }}</td></tr>
-                <tr><td>Valor de Credito</td><td>{{ reporte.valor_de_credito_inicio|format_currency }}</td><td>{{ reporte.valor_de_credito_cierre|format_currency }}</td></tr>
-                <tr><td>Drop</td><td>{{ reporte.drop_inicio|format_currency }}</td><td>{{ reporte.drop_cierre|format_currency }}</td></tr>
-                <tr><td>Billetes</td><td>{{ reporte.billetes_inicio|format_currency }}</td><td>{{ reporte.billetes_cierre|format_currency }}</td></tr>
-                <tr><td>% Real</td><td>{{ reporte.porcentaje_real_inicio }}%</td><td>{{ reporte.porcentaje_real_cierre }}%</td></tr>
-                <tr><td>Valor de Transmisión</td><td>{{ reporte.valor_transmision_inicio|format_currency }}</td><td>{{ reporte.valor_transmision_cierre|format_currency }}</td></tr>
+                <tr>
+                    <td>Créditos Jugados</td>
+                    <td class="td-center">{{ reporte.creditos_jugados_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.creditos_jugados_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Créditos Pagados</td>
+                    <td class="td-center">{{ reporte.creditos_pagados_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.creditos_pagados_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Voucher In</td>
+                    <td class="td-center">{{ reporte.voucher_in_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.voucher_in_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Voucher Out</td>
+                    <td class="td-center">{{ reporte.voucher_out_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.voucher_out_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Jackpot</td>
+                    <td class="td-center">{{ reporte.jackpot_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.jackpot_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Créditos Cancelados</td>
+                    <td class="td-center">{{ reporte.creditos_cancelados_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.creditos_cancelados_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Créditos Cancelados Totales</td>
+                    <td class="td-center">{{ reporte.creditos_cancelados_totales_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.creditos_cancelados_totales_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>ATT Paid Total Won</td>
+                    <td class="td-center">{{ reporte.att_paid_total_won_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.att_paid_total_won_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Juegos</td>
+                    <td class="td-center">{{ reporte.juegos_inicio|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.juegos_cierre|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Valor de Credito</td>
+                    <td class="td-center">{{ reporte.valor_de_credito_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.valor_de_credito_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Drop</td>
+                    <td class="td-center">{{ reporte.drop_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.drop_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>Billetes</td>
+                    <td class="td-center">{{ reporte.billetes_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.billetes_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
+                <tr>
+                    <td>% Real</td>
+                    <td class="td-center">{{ reporte.porcentaje_real_inicio|default:"&nbsp;" }}%</td>
+                    <td class="td-center">{{ reporte.porcentaje_real_cierre|default:"&nbsp;" }}%</td>
+                </tr>
+                <tr>
+                    <td>Valor de Transmisión</td>
+                    <td class="td-center">{{ reporte.valor_transmision_inicio|format_currency|default:"&nbsp;" }}</td>
+                    <td class="td-center">{{ reporte.valor_transmision_cierre|format_currency|default:"&nbsp;" }}</td>
+                </tr>
             </tbody>
         </table>
         <h3>Observaciones</h3>
-        <div class="observaciones-box">{{ reporte.observaciones|linebreaksbr }}</div>
+        <div class="observaciones-box">{{ reporte.observaciones|linebreaksbr|default:"&nbsp;" }}</div>
         <p class="importante-text">
             IMPORTANTE: EN CASO DE RECONOCIMIENTO DE CREDITOS COMPLETAR EL IMPORTE A RECONOCER EN NUMEROS Y LETRAS
         </p>
@@ -143,7 +152,7 @@
                             {% if reporte.firma_tecnico %}
                                 <img src="{{ reporte.firma_tecnico|get_image_path }}" class="signature-image"><br>
                             {% else %}
-                                <span class="signature-placeholder"></span>
+                                <div class="signature-placeholder"></div>
                             {% endif %}
                             Firma y Aclaración<br>Técnico
                         </div>
@@ -151,7 +160,7 @@
                             {% if reporte.firma_jefe_slot %}
                                 <img src="{{ reporte.firma_jefe_slot|get_image_path }}" class="signature-image"><br>
                             {% else %}
-                                <span class="signature-placeholder"></span>
+                                <div class="signature-placeholder"></div>
                             {% endif %}
                             Firma y Aclaración<br>Jefe Slot
                         </div>
@@ -161,15 +170,15 @@
                             {% if reporte.firma_encargado_sala %}
                                 <img src="{{ reporte.firma_encargado_sala|get_image_path }}" class="signature-image"><br>
                             {% else %}
-                                <span class="signature-placeholder"></span>
+                                <div class="signature-placeholder"></div>
                             {% endif %}
                             Firma y Aclaración<br>Encargado/a de Sala
                         </div>
-                        <div class="signature-block">
+                        <div class="signature-block" style="padding-top: 100px;">
                             {% if reporte.firma_cajero %}
                                 <img src="{{ reporte.firma_cajero|get_image_path }}" class="signature-image"><br>
                             {% else %}
-                                <span class="signature-placeholder"></span>
+                                <div class="signature-placeholder"></div>
                             {% endif %}
                             Firma y Aclaración<br>Cajero
                         </div>
